@@ -11,19 +11,19 @@ add_action(
 		$args = array(
 			'public'          => false,
 			'labels'          => array(
-				'name'               => __( 'Boxzilla', 'boxzilla' ),
-				'singular_name'      => __( 'Box', 'boxzilla' ),
-				'add_new'            => __( 'Add New', 'boxzilla' ),
-				'add_new_item'       => __( 'Add New Box', 'boxzilla' ),
-				'edit_item'          => __( 'Edit Box', 'boxzilla' ),
-				'new_item'           => __( 'New Box', 'boxzilla' ),
-				'all_items'          => __( 'All Boxes', 'boxzilla' ),
-				'view_item'          => __( 'View Box', 'boxzilla' ),
-				'search_items'       => __( 'Search Boxes', 'boxzilla' ),
-				'not_found'          => __( 'No Boxes found', 'boxzilla' ),
-				'not_found_in_trash' => __( 'No Boxes found in Trash', 'boxzilla' ),
+				'name'               => esc_html__( 'Boxzilla', 'boxzilla' ),
+				'singular_name'      => esc_html__( 'Box', 'boxzilla' ),
+				'add_new'            => esc_html__( 'Add New', 'boxzilla' ),
+				'add_new_item'       => esc_html__( 'Add New Box', 'boxzilla' ),
+				'edit_item'          => esc_html__( 'Edit Box', 'boxzilla' ),
+				'new_item'           => esc_html__( 'New Box', 'boxzilla' ),
+				'all_items'          => esc_html__( 'All Boxes', 'boxzilla' ),
+				'view_item'          => esc_html__( 'View Box', 'boxzilla' ),
+				'search_items'       => esc_html__( 'Search Boxes', 'boxzilla' ),
+				'not_found'          => esc_html__( 'No Boxes found', 'boxzilla' ),
+				'not_found_in_trash' => esc_html__( 'No Boxes found in Trash', 'boxzilla' ),
 				'parent_item_colon'  => '',
-				'menu_name'          => __( 'Boxzilla', 'boxzilla' ),
+				'menu_name'          => esc_html__( 'Boxzilla', 'boxzilla' ),
 			),
 			'show_ui'         => true,
 			'menu_position'   => '108.1337133',
@@ -78,6 +78,7 @@ function boxzilla_get_link_html( $args = array(), $content = '' ) {
 	$box_id        = empty( $args['box'] ) ? '' : absint( $args['box'] );
 	$class_attr    = empty( $args['class'] ) ? '' : esc_attr( $args['class'] );
 	$action        = empty( $args['action'] ) || ! in_array( $args['action'], $valid_actions, true ) ? 'show' : $args['action'];
-	return sprintf( '<a href="javascript:Boxzilla.%s(%s)" class="%s">', $action, $box_id, $class_attr ) . $content . '</a>';
+
+	return "<a href=\"javascript:Boxzilla.{$action}({$box_id})\" class=\"{$class_attr}\">{$content}</a>";
 }
 

@@ -4,7 +4,7 @@ Donate link: https://boxzillaplugin.com/#utm_source=wp-plugin-repo&utm_medium=bo
 Tags: pop-up, optin, call to action, exit intent
 Requires at least: 4.6
 Tested up to: 6.6
-Stable tag: 3.3.1
+Stable tag: 3.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires PHP: 7.0
@@ -21,13 +21,13 @@ Boxzilla is a plugin allowing you to add pop-up or slide-in boxes to your WordPr
 
 - Boxes can contain any content you like.
 - You can show boxes at various events:
-    - After scrolling down past a certain percentage of the page height.
-    - After scrolling down to a specific page element.
-    - After X seconds on the page.
-    - After X pageviews on the site.
-    - Manually by clicking a link or button
-    - When the user intents to exit your website (Premium)
-    - After X seconds on the site (any page). (Premium)
+	- After scrolling down past a certain percentage of the page height.
+	- After scrolling down to a specific page element.
+	- After X seconds on the page.
+	- After X pageviews on the site.
+	- Manually by clicking a link or button
+	- When the user intents to exit your website (Premium)
+	- After X seconds on the site (any page). (Premium)
 - Customizable box position on the screen.
 - Animations for showing or hiding boxes.
 - Page targeting, to only show pop-ups on certain posts or pages.
@@ -101,7 +101,6 @@ remove_filter( 'boxzilla_box_content', 'do_shortcode' );
 remove_filter( 'boxzilla_box_content', 'shortcode_unautop' );
 `
 
-
 == Installation ==
 
 = Installing the plugin =
@@ -109,7 +108,7 @@ remove_filter( 'boxzilla_box_content', 'shortcode_unautop' );
 1. In your WordPress admin panel, go to *Plugins > New Plugin*, search for *Boxzilla* and click "Install now"
 1. Alternatively, download the plugin and upload the contents of `boxzilla.zip` to your plugins directory, which usually is `/wp-content/plugins/`.
 1. Activate the plugin.
-1. (Optional) Install some [add-on plugins for Boxzilla](https://boxzillaplugin.com/add-ons/)
+1. (Optional) Install [add-on plugins for Boxzilla](https://boxzillaplugin.com/add-ons/)
 
 = Creating a Boxzilla box =
 
@@ -127,8 +126,16 @@ Have a look at the [frequently asked questions](https://wordpress.org/plugins/bo
 3. Another Boxzilla pop-up, with different styles.
 4. Screenshot of the page to manage a Boxzilla pop-up.
 
-
 == Changelog ==
+
+
+#### 3.3.2 - Oct 02, 2024
+
+- The Boxzilla script itself is now deferred for improved client-side performance.
+- You can now use the Boxzilla JS API before the script has fully loaded. 
+- Minor server side performance improvements by getting rid of unnecessary sprintf calls or string copies.
+- All i18n function call return values are now HTML escaped.
+- Verify `Jetpack::is_module_active` exists before method is called.
 
 
 #### 3.3.1 - May 17, 2024
@@ -136,7 +143,7 @@ Have a look at the [frequently asked questions](https://wordpress.org/plugins/bo
 - Minor performance improvements to plugin bootstrapping and autoloader implementation.
 - Fix link in license key form.
 - Move CSS out of JS file for improved parsing performance.
-- Move to webpack instead of Gulp for preparing client-side asset files.
+- Move to webpack instead of Gulp for preparing client-side asset files. 
 - Bump required PHP version to 7.0 or later.
 
 
@@ -145,7 +152,7 @@ Have a look at the [frequently asked questions](https://wordpress.org/plugins/bo
 - Fix scroll based trigger regression introduced in previous version.
 
 
-#### 3.2.26 - Mar 21, 2023
+#### 3.2.26 - Mar 21, 2023 
 
 - Check if `administrator` role exists before adding capabilities to it. Thanks [Jaime Martínez](https://jaimemartinez.nl/).
 - Fix "undefined array key href" warning on PHP8.
@@ -643,4 +650,5 @@ If you're upgrading from the old plugin, please check [updating to Boxzilla from
 == Upgrade Notice ==
 
 = 2.1 =
+
 Added autocomplete to box filters & minor bux fixes for filter rules.
