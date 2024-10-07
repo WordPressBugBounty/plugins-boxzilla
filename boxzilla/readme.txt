@@ -1,13 +1,13 @@
 === Boxzilla ===
 Contributors: Ibericode, DvanKooten, hchouhan, lapzor
 Donate link: https://boxzillaplugin.com/#utm_source=wp-plugin-repo&utm_medium=boxzilla&utm_campaign=donate-link
-Tags: pop-up, optin, call to action, exit intent
+Tags: pop-up, pop-ups, modal, call to action
 Requires at least: 4.6
 Tested up to: 6.6
-Stable tag: 3.3.2
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Requires PHP: 7.0
+Stable tag: 3.3.3
+License: GPL-3.0-or-later
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
+Requires PHP: 7.2
 
 Flexible pop-ups or slide-ins, showing up at just the right time.
 
@@ -128,6 +128,12 @@ Have a look at the [frequently asked questions](https://wordpress.org/plugins/bo
 
 == Changelog ==
 
+
+#### 3.3.3 - Oct 07, 2024
+
+- Fix unclosed element on plugins overview page, breaking the table layout.
+- Bump license to GPL v3 or higher.
+- Bump required PHP version to 7.2 or higher.
 
 #### 3.3.2 - Oct 02, 2024
 

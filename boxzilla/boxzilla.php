@@ -1,21 +1,22 @@
 <?php
 /*
 Plugin Name: Boxzilla
-Version: 3.3.2
+Version: 3.3.3
 Plugin URI: https://www.boxzillaplugin.com/
 Description: Call-To-Action Boxes that display after visitors scroll down far enough. Unobtrusive, but highly conversing!
 Author: ibericode
 Author URI: https://www.ibericode.com/
 Text Domain: boxzilla
 Domain Path: /languages/
-License: GPL v2
+License: GPL-3.0-or-later
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Boxzilla Plugin
-Copyright (C) 2013 - 2024, Danny van Kooten, hi@dannyvankooten.com
+Copyright (C) 2013 Danny van Kooten
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or
+the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
@@ -24,10 +25,15 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+
+// Exit if not loaded inside a WordPress context
 defined('ABSPATH') or exit;
+
+// Exit if PHP lower than 7.2
+PHP_VERSION_ID >= 70200 or exit;
 
 define( 'BOXZILLA_FILE', __FILE__ );
 define( 'BOXZILLA_DIR', __DIR__ );
@@ -36,6 +42,7 @@ define( 'BOXZILLA_VERSION', '3.3.1' );
 require __DIR__ . '/autoload.php';
 require __DIR__ . '/src/services.php';
 require __DIR__ . '/src/licensing/services.php';
+
 
 // register activation hook
 register_activation_hook( __FILE__, array( 'Boxzilla\\Admin\\Installer', 'run' ) );
