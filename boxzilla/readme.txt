@@ -1,10 +1,10 @@
-=== Boxzilla ===
+=== Boxzilla - Pop-Ups for WordPress ===
 Contributors: Ibericode, DvanKooten, hchouhan, lapzor
 Donate link: https://boxzillaplugin.com/#utm_source=wp-plugin-repo&utm_medium=boxzilla&utm_campaign=donate-link
 Tags: pop-up, pop-ups, modal, call to action
 Requires at least: 4.6
 Tested up to: 6.8
-Stable tag: 3.4.2
+Stable tag: 3.4.3
 License: GPL-3.0-or-later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires PHP: 7.4
@@ -21,13 +21,13 @@ Boxzilla is a plugin allowing you to add pop-up or slide-in boxes to your WordPr
 
 - Boxes can contain any content you like.
 - You can show boxes at various events:
-	- After scrolling down past a certain percentage of the page height.
-	- After scrolling down to a specific page element.
-	- After X seconds on the page.
-	- After X pageviews on the site.
-	- Manually by clicking a link or button
-	- When the user intents to exit your website (Premium)
-	- After X seconds on the site (any page). (Premium)
+    - After scrolling down past a certain percentage of the page height.
+    - After scrolling down to a specific page element.
+    - After X seconds on the page.
+    - After X pageviews on the site.
+    - Manually by clicking a link or button
+    - When the user intents to exit your website (Premium)
+    - After X seconds on the site (any page). (Premium)
 - Customizable box position on the screen.
 - Animations for showing or hiding boxes.
 - Page targeting, to only show pop-ups on certain posts or pages.
@@ -127,6 +127,13 @@ Have a look at the [frequently asked questions](https://wordpress.org/plugins/bo
 4. Screenshot of the page to manage a Boxzilla pop-up.
 
 == Changelog ==
+
+
+#### 3.4.3 - Jun 24, 2025
+
+- Rebuild client-side assets with latest Browserslist.
+- Optimize SVG icon for admin menu.
+- Remove newsletter sign-up section from admin pages.
 
 
 #### 3.4.2 - Apr 29, 2025
