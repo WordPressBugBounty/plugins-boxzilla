@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: Boxzilla
-Version: 3.4.6
+Version: 3.4.7
 Plugin URI: https://www.boxzillaplugin.com/
 Description: Call-To-Action Boxes that display after visitors scroll down far enough. Unobtrusive, but highly conversing!
 Author: ibericode
@@ -38,7 +38,7 @@ PHP_VERSION_ID >= 70400 or exit;
 
 define('BOXZILLA_FILE', __FILE__);
 define('BOXZILLA_DIR', __DIR__);
-define('BOXZILLA_VERSION', '3.4.6');
+define('BOXZILLA_VERSION', '3.4.7');
 
 require __DIR__ . '/autoload.php';
 require __DIR__ . '/src/services.php';
@@ -57,10 +57,10 @@ add_action(
         require __DIR__ . '/src/default-filters.php';
         require __DIR__ . '/src/default-actions.php';
 
-        if (defined('DOING_AJAX') && DOING_AJAX) {
+        if (wp_doing_ajax()) {
             $boxzilla['filter.autocomplete']->init();
             $boxzilla['admin.menu']->init();
-        } elseif (defined('DOING_CRON') && DOING_CRON) {
+        } elseif (wp_doing_cron()) {
             $boxzilla['license_poller']->init();
         } elseif (is_admin()) {
             $boxzilla['admin']->init();
@@ -75,7 +75,7 @@ add_action(
         }
 
         // license manager
-        if (is_admin() || ( defined('DOING_CRON') && DOING_CRON ) || ( defined('WP_CLI') && WP_CLI )) {
+        if (is_admin() || wp_doing_cron() || ( defined('WP_CLI') && WP_CLI )) {
             $boxzilla['license_manager']->init();
 
             if (count($boxzilla->plugins) > 0) {

@@ -30,14 +30,14 @@ class Plugin
     protected $slug = '';
 
     /**
-     * @var int
+     * @var string
      */
-    protected $id = 0;
+    protected $id = '';
 
     /**
      * Constructor
      *
-     * @param int $id
+     * @param string $id
      * @param string $name
      * @param string $version
      * @param string $file
@@ -58,7 +58,7 @@ class Plugin
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function id()
     {

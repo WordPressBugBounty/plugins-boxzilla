@@ -1,4 +1,12 @@
-<?php defined('ABSPATH') or exit; ?>
+<?php defined('ABSPATH') or exit;
+
+/**
+ * Box Appearance Controls
+ *
+ * @var \Boxzilla\Box $box
+ * @var array $opts
+ */
+?>
 <div id="notice-notinymce" class="error" style="display: none;"><p><?php esc_html_e('For the best experience when styling your box, please use the default WordPress visual editor.', 'boxzilla'); ?></p></div>
 
 <table class="form-table">
@@ -13,8 +21,8 @@
             <input id="boxzilla-color" name="boxzilla_box[css][color]" type="text" class="boxzilla-color-field" value="<?php echo esc_attr($opts['css']['color']); ?>" />
         </td>
         <td>
-            <label class="boxzilla-label" for="boxzilla-width"><?php esc_html_e('Box width', 'boxzilla'); ?></label>
-            <input id="boxzilla-width" name="boxzilla_box[css][width]" id="boxzilla-box-width" min="0" max="3200" type="number" step="1" value="<?php echo esc_attr($opts['css']['width']); ?>" />
+            <label class="boxzilla-label" for="boxzilla-box-width"><?php esc_html_e('Box width', 'boxzilla'); ?></label>
+            <input id="boxzilla-box-width" name="boxzilla_box[css][width]" min="0" max="3200" type="number" step="1" value="<?php echo esc_attr($opts['css']['width']); ?>" />
             <p class="help"><?php esc_html_e('Width in px', 'boxzilla'); ?></p>
         </td>
     </tr>

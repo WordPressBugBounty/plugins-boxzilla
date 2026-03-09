@@ -22,7 +22,7 @@ class UpdateManager
     protected $license;
 
     /**
-     * @var
+     * @var array
      */
     protected $available_updates;
 
@@ -76,26 +76,14 @@ class UpdateManager
         return $args;
     }
 
-    private function get_plugin_by_slug($slug)
-    {
-        foreach ($this->extensions as $p) {
-            // find plugin by slug
-            if (dirname($p->slug()) === $slug) {
-                return $p;
-            }
-        }
-
-        return null;
-    }
-
     /**
      * @param        $result
      * @param string $action
-     * @param null   $args
+     * @param object   $args
      *
-     * @return object
+     * @return object|null
      */
-    public function get_plugin_info($result, $action = '', $args = null)
+    public function get_plugin_info($result, $action, $args)
     {
         // do nothing for unrelated requests
         if ($action !== 'plugin_information' || ! isset($args->slug)) {
@@ -111,7 +99,7 @@ class UpdateManager
     }
 
     /**
-     * @param object $updates
+     * @param null|object $updates
      * @return object
      */
     public function add_updates($updates)
@@ -221,7 +209,7 @@ class UpdateManager
     /**
      * @param string $slug
      *
-     * @return null
+     * @return object|null
      */
     public function get_update_info($slug)
     {
