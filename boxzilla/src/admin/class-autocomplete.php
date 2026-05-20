@@ -2,8 +2,14 @@
 
 namespace Boxzilla\Filter;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 class Autocomplete
 {
+    private const MAX_RESULTS = 20;
+
     public function init(): void
     {
         add_action('wp_ajax_boxzilla_autocomplete', [ $this, 'ajax' ], 10, 0);
@@ -14,36 +20,44 @@ class Autocomplete
      */
     public function ajax(): void
     {
-        $q    = ( isset($_GET['q']) ) ? sanitize_text_field($_GET['q']) : '';
-        $type = ( isset($_GET['type']) && in_array($_GET['type'], [ 'page', 'post', 'category', 'post_type', 'post_tag' ], true) ) ? $_GET['type'] : 'post';
+        if (! current_user_can('edit_box')) {
+            wp_die('', '', [ 'response' => 403 ]);
+        }
+
+        $q = isset($_GET['q']) ? sanitize_text_field(wp_unslash($_GET['q'])) : '';
+        $allowed_types = [ 'page', 'post', 'category', 'post_type', 'post_tag' ];
+        $type = isset($_GET['type']) ? sanitize_key(wp_unslash($_GET['type'])) : '';
+        if (! in_array($type, $allowed_types, true)) {
+            $type = 'post';
+        }
 
         // do nothing if supplied 'q' parameter is omitted or empty
         // or less than 2 characters long
         if (empty($q) || strlen($q) < 2) {
-            die();
+            wp_die();
         }
 
         switch ($type) {
             default:
             case 'post':
             case 'page':
-                echo $this->list_posts($q, $type);
+                echo esc_html($this->list_posts($q, $type));
                 break;
 
             case 'category':
-                echo $this->list_categories($q);
+                echo esc_html($this->list_categories($q));
                 break;
 
             case 'post_type':
-                echo $this->list_post_types($q);
+                echo esc_html($this->list_post_types($q));
                 break;
 
             case 'post_tag':
-                echo $this->list_tags($q);
+                echo esc_html($this->list_tags($q));
                 break;
         }
 
-        die();
+        wp_die();
     }
 
     /**
@@ -55,8 +69,18 @@ class Autocomplete
     protected function list_posts($query, $post_type = 'post')
     {
         global $wpdb;
-        $sql        = $wpdb->prepare("SELECT p.post_name FROM $wpdb->posts p WHERE p.post_type = %s AND p.post_status = 'publish' AND ( p.post_title LIKE %s OR p.post_name LIKE %s ) GROUP BY p.post_name", $post_type, $query . '%%', $query . '%%');
-        $post_slugs = $wpdb->get_col($sql);
+        $like = $wpdb->esc_like($query) . '%';
+        $limit = self::MAX_RESULTS;
+
+        $post_slugs = $wpdb->get_col(
+            $wpdb->prepare(
+                "SELECT p.post_name FROM $wpdb->posts p WHERE p.post_type = %s AND p.post_status = 'publish' AND ( p.post_title LIKE %s OR p.post_name LIKE %s ) GROUP BY p.post_name ORDER BY p.post_name ASC LIMIT %d",
+                $post_type,
+                $like,
+                $like,
+                $limit
+            )
+        );
         return join(PHP_EOL, $post_slugs);
     }
 
@@ -70,9 +94,15 @@ class Autocomplete
         $terms = get_terms([
             'taxonomy' => 'category',
             'name__like' => $query,
+            'number'     => self::MAX_RESULTS,
             'fields'     => 'names',
             'hide_empty' => false,
         ]);
+
+        if (is_wp_error($terms)) {
+            return '';
+        }
+
         return join(PHP_EOL, $terms);
     }
 
@@ -86,9 +116,15 @@ class Autocomplete
         $terms = get_terms([
             'taxonomy' => 'post_tag',
             'name__like' => $query,
+            'number'     => self::MAX_RESULTS,
             'fields'     => 'names',
             'hide_empty' => false,
         ]);
+
+        if (is_wp_error($terms)) {
+            return '';
+        }
+
         return join(PHP_EOL, $terms);
     }
 
@@ -107,6 +143,8 @@ class Autocomplete
                 return strpos($name, $query) === 0;
             }
         );
+
+        $matched_post_types = array_slice($matched_post_types, 0, self::MAX_RESULTS);
 
         return join(PHP_EOL, $matched_post_types);
     }

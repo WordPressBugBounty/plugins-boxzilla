@@ -2,6 +2,10 @@
 
 namespace Boxzilla;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 class BoxLoader
 {
     /**
@@ -108,7 +112,7 @@ class BoxLoader
      */
     protected function get_request_url()
     {
-        return \boxzilla_normalize_relative_url(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/');
+        return rtrim($_SERVER['REQUEST_URI'] ?? '', '/');
     }
 
     /**
@@ -299,7 +303,7 @@ class BoxLoader
 
         echo '<div style="display: none;">';
         foreach ($boxes as $box) {
-            echo "<div id=\"boxzilla-box-{$box->ID}-content\">", $box->get_content(), "</div>";
+            printf('<div id="boxzilla-box-%d-content">%s</div>', absint($box->ID), $box->get_content());
         }
         echo '</div>';
     }

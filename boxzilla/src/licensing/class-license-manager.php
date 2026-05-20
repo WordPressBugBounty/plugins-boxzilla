@@ -2,6 +2,10 @@
 
 namespace Boxzilla\Licensing;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 class LicenseManager
 {
     /**
@@ -81,9 +85,11 @@ class LicenseManager
             return;
         }
 
-        $plugin  = $this->extensions[ array_rand($this->extensions) ];
-        $message = sprintf('Please <a href="%s">activate your Boxzilla license</a> to use %s.', admin_url('edit.php?post_type=boxzilla-box&page=boxzilla-settings'), '<strong>' . $plugin->name() . '</strong>');
-        echo sprintf('<div class="notice notice-%s"><p>%s</p></div>', 'warning', $message);
+        $plugin       = $this->extensions[ array_rand($this->extensions) ];
+        $settings_url = esc_url(admin_url('edit.php?post_type=boxzilla-box&page=boxzilla-settings'));
+        $plugin_name  = esc_html($plugin->name());
+        $message      = sprintf('Please <a href="%1$s">activate your Boxzilla license</a> to use <strong>%2$s</strong>.', $settings_url, $plugin_name);
+        echo '<div class="notice notice-warning"><p>' . wp_kses_post($message) . '</p></div>';
     }
 
     /**
@@ -102,11 +108,20 @@ class LicenseManager
             return;
         }
 
-        $action      = isset($_POST['action']) ? $_POST['action'] : 'activate';
+        $nonce = isset($_POST['boxzilla_license_nonce']) ? sanitize_text_field(wp_unslash($_POST['boxzilla_license_nonce'])) : '';
+        if (! wp_verify_nonce($nonce, 'boxzilla_license_form_action')) {
+            $this->notices[] = [
+                'type'    => 'warning',
+                'message' => esc_html__('Security check failed. Please refresh the page and try again.', 'boxzilla'),
+            ];
+            return;
+        }
+
+        $action      = isset($_POST['action']) ? sanitize_text_field(wp_unslash($_POST['action'])) : 'activate';
         $key_changed = false;
 
         // did key change or was "activate" button pressed?
-        $new_license_key = sanitize_text_field($_POST['boxzilla_license_key']);
+        $new_license_key = isset($_POST['boxzilla_license_key']) ? sanitize_text_field(wp_unslash($_POST['boxzilla_license_key'])) : '';
         if ($new_license_key !== $this->license->key) {
             $this->license->key = $new_license_key;
             $key_changed        = true;

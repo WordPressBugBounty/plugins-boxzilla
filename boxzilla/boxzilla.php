@@ -2,13 +2,14 @@
 
 /*
 Plugin Name: Boxzilla
-Version: 3.4.8
+Version: 3.4.9
 Plugin URI: https://www.boxzillaplugin.com/
 Description: Call-To-Action Boxes that display after visitors scroll down far enough. Unobtrusive, but highly conversing!
 Author: ibericode
 Author URI: https://www.ibericode.com/
 Text Domain: boxzilla
-Domain Path: /languages/
+Requires at least: 4.6
+Requires PHP: 7.4
 License: GPL-3.0-or-later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -38,7 +39,7 @@ PHP_VERSION_ID >= 70400 or exit;
 
 define('BOXZILLA_FILE', __FILE__);
 define('BOXZILLA_DIR', __DIR__);
-define('BOXZILLA_VERSION', '3.4.8');
+define('BOXZILLA_VERSION', '3.4.9');
 
 require __DIR__ . '/autoload.php';
 require __DIR__ . '/src/services.php';
@@ -46,6 +47,7 @@ require __DIR__ . '/src/licensing/services.php';
 
 // register activation hook
 register_activation_hook(__FILE__, [ 'Boxzilla\\Admin\\Installer', 'run' ]);
+register_deactivation_hook(__FILE__, [ 'Boxzilla\\Licensing\\Poller', 'deactivate' ]);
 
 // Bootstrap plugin at later action hook
 add_action(

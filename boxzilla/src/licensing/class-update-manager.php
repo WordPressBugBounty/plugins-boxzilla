@@ -4,6 +4,10 @@ namespace Boxzilla\Licensing;
 
 use Boxzilla\Plugin;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 class UpdateManager
 {
     /**

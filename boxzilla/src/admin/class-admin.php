@@ -8,6 +8,10 @@ use Boxzilla\Boxzilla;
 use WP_Post;
 use WP_Screen;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 class Admin
 {
     /**
@@ -53,7 +57,6 @@ class Admin
     {
         add_action('admin_init', [ $this, 'lazy_add_hooks' ]);
         add_action('admin_init', [ $this, 'register' ]);
-        add_action('init', [ $this, 'listen_for_actions' ]);
         add_action('admin_menu', [ $this, 'menu' ]);
         add_action('admin_notices', [ $this, 'notices' ]);
         add_action('save_post_boxzilla-box', [ $this, 'save_box_options' ], 20, 2);
@@ -61,29 +64,6 @@ class Admin
         add_action('untrashed_post', [ $this, 'flush_rules' ]);
         add_filter('bulk_actions-edit-boxzilla-box', [ $this, 'bulk_action_add' ]);
         add_filter('handle_bulk_actions-edit-boxzilla-box', [ $this, 'bulk_action_handle' ], 10, 3);
-    }
-
-    /**
-     * Listen for admin actions.
-     */
-    public function listen_for_actions()
-    {
-        // triggered?
-        $vars = array_merge($_POST, $_GET);
-        if (empty($vars['_boxzilla_admin_action'])) {
-            return false;
-        }
-
-        // authorized?
-        if (! current_user_can('edit_posts')) {
-            return false;
-        }
-
-        // fire action
-        $action = $vars['_boxzilla_admin_action'];
-        do_action('boxzilla_admin_' . $action);
-
-        return true;
     }
 
     public function bulk_action_add($bulk_actions)
@@ -184,7 +164,7 @@ class Admin
      */
     public function post_type_column_box_id_content($post_id)
     {
-        echo $post_id;
+        echo absint($post_id);
     }
 
     /**
@@ -550,7 +530,21 @@ class Admin
      */
     public function sanitize_url($url_string)
     {
-        return \boxzilla_normalize_relative_url($url_string);
+        // if empty, just return a slash
+        if (empty($url_string)) {
+            return '/';
+        }
+
+        // if string looks like an absolute URL, extract just the path
+        if (preg_match('/^((https|http)?\:\/\/)?(\w+\.)?\w+\.\w+\.*/i', $url_string)) {
+            // make sure URL has scheme prepended, to make parse_url() understand..
+            $url_string = 'https://' . str_replace([ 'http://', 'https://' ], '', $url_string);
+
+            // get just the path
+            $url_string = parse_url($url_string, PHP_URL_PATH);
+        }
+
+        return $url_string;
     }
 
     /**
