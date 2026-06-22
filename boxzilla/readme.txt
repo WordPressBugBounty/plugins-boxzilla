@@ -4,7 +4,7 @@ Donate link: https://boxzillaplugin.com/#utm_source=wp-plugin-repo&utm_medium=bo
 Tags: popup builder, popups, slide-in, call to action, modal
 Requires at least: 4.6
 Tested up to: 7.0
-Stable tag: 3.4.10
+Stable tag: 3.4.11
 License: GPL-3.0-or-later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Requires PHP: 7.4
@@ -114,6 +114,11 @@ remove_filter( 'boxzilla_box_content', 'do_shortcode' );
 remove_filter( 'boxzilla_box_content', 'shortcode_unautop' );
 `
 
+= Where do I report security bugs found in this plugin? =
+
+Please report security bugs found in the source code of the plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/e5e16c0c-f6c9-469f-a83e-d5342d973d88). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
+
 == Screenshots ==
 
 1. A Boxzilla WordPress popup with a newsletter sign-up form.
@@ -121,6 +126,15 @@ remove_filter( 'boxzilla_box_content', 'shortcode_unautop' );
 3. The Boxzilla popup editor, where you manage content, triggers, targeting, and appearance settings.
 
 == Changelog ==
+
+= 3.4.11 =
+
+Release date: Jun 22, 2026
+
+- Prevent a JavaScript error when Boxzilla loads before the page body is available.
+- Support opening boxes from links with deeply nested content.
+- Add instructions for securely reporting plugin vulnerabilities through Patchstack.
+
 
 = 3.4.10 =
 
@@ -159,13 +173,5 @@ Release date: Mar 9, 2026
 - Fix duplicate id attribute on box width input field
 - Fix deprecation in call to get_terms()
 - Various other type fixes, PHPDoc improvements or removal of unused code.
-
-
-= 3.4.6 =
-
-Release date: Feb 10, 2026
-
-- Bugfix: fire box.interactions.link event for `<img>` clicks inside an `<a>` element (or any nested element inside a hyperlink).
-    
 
 [View the full changelog on GitHub](https://github.com/ibericode/boxzilla-wp/blob/main/CHANGELOG.md)

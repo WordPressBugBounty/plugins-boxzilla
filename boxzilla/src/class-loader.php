@@ -112,7 +112,7 @@ class BoxLoader
      */
     protected function get_request_url()
     {
-        return rtrim($_SERVER['REQUEST_URI'] ?? '', '/');
+        return rtrim(wp_unslash($_SERVER['REQUEST_URI'] ?? ''), '/');
     }
 
     /**
@@ -143,7 +143,7 @@ class BoxLoader
 
             case 'is_referer':
                 if (! empty($_SERVER['HTTP_REFERER'])) {
-                    $referer = $_SERVER['HTTP_REFERER'];
+                    $referer = wp_unslash($_SERVER['HTTP_REFERER']);
                     $matched = $this->match_patterns($referer, $values, $qualifier === 'contains' || $qualifier === 'not_contains');
                 }
                 break;
@@ -272,7 +272,6 @@ class BoxLoader
         wp_enqueue_style('boxzilla', $this->plugin->url('/assets/css/styles.css'), [], $this->plugin->version());
         wp_enqueue_script('boxzilla', $this->plugin->url('/assets/js/script.js'), [], $this->plugin->version(), [
             'strategy' => 'defer',
-            'in_footer' => true,
         ]);
 
         // create boxzilla_Global_Options object
@@ -288,9 +287,7 @@ class BoxLoader
                 $boxes
             ),
         ];
-
-        wp_localize_script('boxzilla', 'boxzilla_options', $data);
-
+        wp_add_inline_script('boxzilla', 'var boxzilla_options = ' . wp_json_encode($data) . ';', 'before');
         do_action('boxzilla_load_assets', $this);
     }
 
@@ -303,7 +300,7 @@ class BoxLoader
 
         echo '<div style="display: none;">';
         foreach ($boxes as $box) {
-            printf('<div id="boxzilla-box-%d-content">%s</div>', absint($box->ID), $box->get_content());
+            printf('<div id="boxzilla-box-%d-content">%s</div>', absint($box->ID), $box->get_content()); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         }
         echo '</div>';
     }
@@ -317,7 +314,7 @@ class BoxLoader
     {
         static $boxes;
 
-        if (is_null($boxes)) {
+        if ($boxes === null) {
             if (count($this->box_ids_to_load) === 0) {
                 return [];
             }
